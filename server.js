@@ -7,6 +7,7 @@ const expressLayouts = require("express-ejs-layouts");
 const indexRouter = require("./routes/index");
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
+const dashboardRouter = require("./routes/dashboard");
 const passport = require("passport");
 const session = require("express-session");
 const ejs = require("ejs");
@@ -54,11 +55,21 @@ app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile"] })
 );
+app.get("/dashboard", (req, res) => {
+  res.render("dashboard");
+});
 app.get("/auth/facebook", passport.authenticate("facebook"));
 app.use("/", indexRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
+app.use("/dashboard", dashboardRouter);
 
+app.get("/loginSuccess", (req, res) => {
+  res.json("login_Success");
+});
+app.get("/loginFailure", (req, res) => {
+  res.json("login_failed");
+});
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server started...");
 });

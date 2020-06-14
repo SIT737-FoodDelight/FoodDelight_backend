@@ -14,6 +14,11 @@ const UserSchema = new mongoose.Schema({
     default: Date.now,
   },
   googleId: String,
+  facebookId: String,
+  mobile_number: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

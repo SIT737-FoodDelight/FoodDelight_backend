@@ -16,6 +16,7 @@ router.post("/", (req, res) => {
           const newUser = new User({
             username: req.body.username,
             password: hash,
+            mobile_number: req.body.mobileNumber,
           });
           newUser.save((err) => {
             if (err) {
