@@ -7,9 +7,12 @@ module.exports = {
     res.redirect("/users/login");
   },
   forwardAuthenticated: function (req, res, next) {
-    if (!req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
+      console.log("authenticated");
       return next();
+    } else {
+      console.log("not authenticated");
+      res.redirect("/login");
     }
-    res.redirect("/dashboard");
   },
 };

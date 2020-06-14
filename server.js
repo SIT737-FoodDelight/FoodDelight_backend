@@ -12,7 +12,7 @@ const passport = require("passport");
 const session = require("express-session");
 const ejs = require("ejs");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
+const { forwardAuthenticated } = require("./config/auth");
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("layout", "layouts/layout");
@@ -55,7 +55,7 @@ app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile"] })
 );
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", forwardAuthenticated, (req, res) => {
   res.render("dashboard");
 });
 app.get("/auth/facebook", passport.authenticate("facebook"));

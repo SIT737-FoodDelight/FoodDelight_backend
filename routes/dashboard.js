@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-
+const { forwardAuthenticated } = require("../config/auth");
 const Order = require("../models/Order");
 const User = require("../models/User");
 
-router.post("/", (req, res) => {
+router.post("/", forwardAuthenticated, (req, res) => {
   console.log(req.user);
   const newOrder = new Order({
     user_id: req.user._id,
