@@ -13,6 +13,9 @@ const session = require("express-session");
 const ejs = require("ejs");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { forwardAuthenticated } = require("./config/auth");
+const cors = require("cors");
+
+app.use(cors());
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("layout", "layouts/layout");
