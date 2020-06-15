@@ -25,7 +25,8 @@ router.post("/", async (req, res) => {
   if (!pwdCheck) return res.status(400).send("Invalid Password");
 
   const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-  res.header("authToken", token).send("login_Success");
+  //res.header("authToken", token).send("login_Success");
+  res.json({ message: "login_Success", authToken: token });
 });
 
 module.exports = router;
