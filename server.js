@@ -14,8 +14,10 @@ const ejs = require("ejs");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { forwardAuthenticated } = require("./config/auth");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 app.use(cors());
+
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("layout", "layouts/layout");
@@ -34,12 +36,13 @@ mongoose.connect(process.env.DATABASE_URL, {
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("connected to mongoose"));
-
+app.use(cookieParser("asdf33g4w4hghjkuil8saef123"));
 app.use(
   session({
-    secret: "secret",
+    secret: "asdf33g4w4hghjkuil8saef123",
     resave: true,
     saveUninitialized: true,
+    cookie: { secure: false },
   })
 );
 
@@ -58,9 +61,7 @@ app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile"] })
 );
-app.get("/dashboard", forwardAuthenticated, (req, res) => {
-  res.render("dashboard");
-});
+
 app.get("/auth/facebook", passport.authenticate("facebook"));
 app.use("/", indexRouter);
 app.use("/register", registerRouter);
@@ -68,11 +69,13 @@ app.use("/login", loginRouter);
 app.use("/dashboard", dashboardRouter);
 
 app.get("/loginSuccess", (req, res) => {
+  req.session.save();
+  console.log(req.user);
   res.json("login_Success");
 });
 app.get("/loginFailure", (req, res) => {
   res.json("login_failed");
 });
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log("Server started...");
 });

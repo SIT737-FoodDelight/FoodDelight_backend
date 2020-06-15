@@ -1,12 +1,17 @@
+const passport = require("passport");
+
 module.exports = {
   ensureAuthenticated: function (req, res, next) {
+    console.log(req.user);
     if (req.isAuthenticated()) {
+      console.log("authenticated");
       return next();
     }
-    req.flash("error_msg", "Please log in to view that resource");
-    res.redirect("/users/login");
+    console.log("not authenticated");
+    res.redirect("/login");
   },
   forwardAuthenticated: function (req, res, next) {
+    console.log(req.user);
     if (req.isAuthenticated()) {
       console.log("authenticated");
       return next();
