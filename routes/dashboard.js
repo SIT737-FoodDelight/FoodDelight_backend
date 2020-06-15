@@ -5,12 +5,6 @@ const Order = require("../models/Order");
 const User = require("../models/User");
 const auth = require("../config/jwtAuth");
 
-router.get("/", ensureAuthenticated, (req, res) =>
-  res.render("dashboard", {
-    user: req.user,
-  })
-);
-
 router.post("/", auth, (req, res) => {
   console.log(req.header("authToken"));
   const newOrder = new Order({
@@ -24,7 +18,7 @@ router.post("/", auth, (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.json("saved items");
+      res.json("saved order items");
     }
   });
 });

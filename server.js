@@ -9,6 +9,7 @@ const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
 const dashboardRouter = require("./routes/dashboard");
 const profileRouter = require("./routes/profile");
+const cookRouter = require("./routes/cookfood");
 
 const passport = require("passport");
 const session = require("express-session");
@@ -69,6 +70,7 @@ app.use("/", indexRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/dashboard", dashboardRouter);
+app.use("/cookfood", cookRouter);
 app.use("/profile", profileRouter);
 app.get("/loginSuccess", (req, res) => {
   req.session.save();
