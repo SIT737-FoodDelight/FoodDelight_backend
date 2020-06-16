@@ -17,6 +17,10 @@ const cookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  accepted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("CookProfile", cookSchema);

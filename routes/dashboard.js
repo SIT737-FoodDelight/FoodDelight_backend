@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { forwardAuthenticated, ensureAuthenticated } = require("../config/auth");
 const Order = require("../models/Order");
-const User = require("../models/User");
 const auth = require("../config/jwtAuth");
 
 router.post("/", auth, (req, res) => {
