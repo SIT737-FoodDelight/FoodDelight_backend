@@ -6,8 +6,7 @@ const cookProfile = require("../models/CookProfile");
 router.post("/", jwtauth, async (req, res, next) => {
   const findProfile = await cookProfile.findOne({ user_id: req.user._id });
   if (findProfile) {
-    if (findProfile.accepted === false)
-      return res.json("we are verifying the details");
+    if (findProfile.accepted === true) return res.json("cook profile exists");
   }
   const cooking = new cookProfile({
     user_id: req.user._id,
@@ -17,7 +16,7 @@ router.post("/", jwtauth, async (req, res, next) => {
   });
   try {
     const saveCook = await cooking.save();
-    if (saveCook) return res.json("cooking details saved");
+    return res.json("cook profile saved");
   } catch (err) {
     res.json({ message: "error saving details" });
   }

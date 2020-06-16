@@ -19,7 +19,7 @@ const cookSchema = new mongoose.Schema({
   },
   accepted: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 });
 
