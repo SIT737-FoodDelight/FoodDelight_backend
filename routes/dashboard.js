@@ -8,7 +8,7 @@ router.post("/", auth, async (req, res) => {
   console.log(req.header("authToken"));
 
   const user = await User.findOne({ _id: req.user._id });
-  console.log(`add ${user.user_address}`);
+
   if (user.user_address === "") {
     return res.json(
       "Please add address in manage account before placing order"
