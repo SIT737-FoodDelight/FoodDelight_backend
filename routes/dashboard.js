@@ -4,14 +4,16 @@ const Order = require("../models/Order");
 const auth = require("../config/jwtAuth");
 const User = require("../models/User");
 
-router.post("/", auth, (req, res) => {
+router.post("/", auth, async (req, res) => {
   console.log(req.header("authToken"));
 
-  const user = User.findOne({ _id: req.user._id });
-  if (user.user_address.length === 0)
+  const user = await User.findOne({ _id: req.user._id });
+  console.log(`add ${user.user_address}`);
+  if (user.user_address === "") {
     return res.json(
       "Please add address in manage account before placing order"
     );
+  }
 
   const newOrder = new Order({
     user_id: req.user._id,
