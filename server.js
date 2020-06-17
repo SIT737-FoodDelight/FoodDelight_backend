@@ -31,7 +31,6 @@ const findOrCreate = require("mongoose-findorcreate");
 const jwt = require("jsonwebtoken");
 
 app.use(cors());
-
 app.set("layout", "layouts/layout");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
