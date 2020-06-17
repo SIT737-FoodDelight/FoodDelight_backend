@@ -11,12 +11,16 @@ const dashboardRouter = require("./routes/dashboard");
 const profileRouter = require("./routes/profile");
 const cookRouter = require("./routes/cookfood");
 const orderRouter = require("./routes/showorders");
+const checklicenseRouter = require("./routes/checklicense");
+const acceptOrderRouter = require("./routes/acceptorder");
+const myordersRouter = require("./routes/myorders");
 
 const passport = require("passport");
 const cors = require("cors");
 const session = require("express-session");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 const jwt = require("jsonwebtoken");
 
@@ -66,13 +70,27 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL:
-        "https://project-frontend-app-silly-hippopotamus-zv.mybluemix.net/auth/google/secrets",
+      callbackURL: "http://localhost:5000/auth/google/secrets",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
       console.log(profile);
       User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        return cb(err, user);
+      });
+    }
+  )
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+      callbackURL: "http://localhost:5000/auth/facebook/callback",
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      User.findOrCreate({ facebookId: profile.id }, function (err, user) {
         return cb(err, user);
       });
     }
@@ -86,16 +104,30 @@ app.get(
 
 app.get("/auth/facebook", passport.authenticate("facebook"));
 
+app.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", { failureRedirect: "/" }),
+  async (req, res) => {
+    console.log(req);
+    res.redirect("/");
+  }
+);
+
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/cookfood", cookRouter);
 app.use("/profile", profileRouter);
 app.use("/orders", orderRouter);
+app.use("/checklicense", checklicenseRouter);
+app.use("/accept", acceptOrderRouter);
+app.use("/myorders", myordersRouter);
+
+app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
 
 app.get(
   "/auth/google/secrets",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", { failureRedirect: "/" }),
   async (req, res) => {
     console.log(req.session.passport.user);
     const user = await User.findOne({ _id: req.session.passport.user });
