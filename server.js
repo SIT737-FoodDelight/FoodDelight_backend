@@ -53,6 +53,7 @@ db.once("open", () => console.log("connected to mongoose"));
 mongoose.set("useCreateIndex", true);
 
 const User = require("./models/User");
+const jwtAuth = require("./config/jwtAuth");
 passport.use(User.createStrategy());
 
 passport.serializeUser(function (user, done) {
@@ -99,7 +100,7 @@ passport.use(
   )
 );
 
-app.post("/sms", function (req, res) {
+app.post("/sms", jwtAuth, async (req, res) => {
   var twilio = require("twilio");
   var twiml = new twilio.twiml.MessagingResponse();
   twiml.message("I want to accept the order. Let's talk");
