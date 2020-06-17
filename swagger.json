@@ -35,8 +35,8 @@
         }
       }
     },
-    "/orders": {
-      "get": {
+    "/Orders": {
+      "post": {
         "tags": ["orders"],
         "summary": "Get all orders",
         "parameters": [
@@ -95,7 +95,6 @@
               "$ref": "#/definitions/UserLogin"
             }
           }
-         
         ],
         "produces": ["application/json"],
         "responses": {
@@ -107,8 +106,38 @@
           }
         }
       }
+    },
+    "/profile": {
+      "post": {
+        "tags": ["user"],
+        "description": "Get user details using Email",
+        "parameters": [
+          {
+            "name": "authToken",
+            "in": "header",
+            "schema": {
+              "$ref": "#/definitions/orderAuth"
+            }
+          },
+          {
+            "name": "user details",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/profile"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "schema": {
+              "$ref": "#/definitions/profile"
+            }
+          }
+        }
+      }
     }
-    
   },
 
   "definitions": {
@@ -166,8 +195,21 @@
         }
       }
     },
-    
-    "orders": {
+    "profile": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "mobile_number": {
+          "type": "integer"
+        }
+      }
+    },
+    "Orders": {
       "type": "object",
       "properties": {
         "_id": {
