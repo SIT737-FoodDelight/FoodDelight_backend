@@ -3,6 +3,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 //Routes
 const registerRouter = require("./routes/register");
@@ -14,6 +16,7 @@ const orderRouter = require("./routes/showorders");
 const checklicenseRouter = require("./routes/checklicense");
 const acceptOrderRouter = require("./routes/acceptorder");
 const myordersRouter = require("./routes/myorders");
+
 const twilioRouter = require("./routes/twilio");
 const userDetailsRouter = require("./routes/userDetails");
 
@@ -45,6 +48,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const mongoose = require("mongoose");
+
 mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -142,5 +146,6 @@ app.get(
 );
 
 app.listen(process.env.PORT || 5000, () => {
+  app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   console.log("Server started...");
 });

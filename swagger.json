@@ -1,0 +1,215 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "fooddelightAPI",
+    "description": "fodDelight",
+    "license": {
+      "name": "foodDelight",
+      "url": "https://www.swagger.io/"
+    }
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "food delivery",
+      "description": "API for food delivery "
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/User": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Get all users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Get all orders",
+        "parameters": [
+          {
+            "name": "authToken",
+            "in": "header",
+            "description": "Get orders"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/orderAuth"
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": ["user"],
+        "description": "Get user details using Email",
+        "parameters": [
+          {
+            "name": "register",
+            "in": "body",
+            "description": "register user",
+            "schema": {
+              "$ref": "#/definitions/Register"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "schema": {
+              "$ref": "#/definitions/Register"
+            }
+          }
+        }
+      }
+    },
+    "/Login": {
+      "post": {
+        "tags": ["user"],
+        "description": "Get user details using Email",
+        "parameters": [
+          {
+            "name": "Users",
+            "in": "body",
+            "description": "Get user by Email",
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+         
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+        }
+      }
+    }
+    
+  },
+
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Register": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "mobile_number": {
+          "type": "integer"
+        }
+      }
+    },
+    "UserLogin": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    
+    "orders": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "order_status": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "completion_status": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "item_name": {
+          "type": "string"
+        },
+        "item_description": {
+          "type": "string"
+        },
+        "item_price": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "due_date": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "orders"
+      }
+    },
+    "orderAuth": {
+      "type": "object",
+      "properties": {
+        "authToken": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
