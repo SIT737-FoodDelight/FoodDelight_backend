@@ -14,6 +14,7 @@ const orderRouter = require("./routes/showorders");
 const checklicenseRouter = require("./routes/checklicense");
 const acceptOrderRouter = require("./routes/acceptorder");
 const myordersRouter = require("./routes/myorders");
+const twilioRouter = require("./routes/twilio");
 
 const passport = require("passport");
 const cors = require("cors");
@@ -100,14 +101,6 @@ passport.use(
   )
 );
 
-app.post("/sms", jwtAuth, async (req, res) => {
-  var twilio = require("twilio");
-  var twiml = new twilio.twiml.MessagingResponse();
-  twiml.message("I want to accept the order. Let's talk");
-  res.writeHead(200, { "Content-Type": "text/xml" });
-  res.end(twiml.toString());
-});
-
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile"] })
@@ -133,6 +126,7 @@ app.use("/orders", orderRouter);
 app.use("/checklicense", checklicenseRouter);
 app.use("/accept", acceptOrderRouter);
 app.use("/myorders", myordersRouter);
+app.use("/sms", twilioRouter);
 
 app.get(
   "/auth/google/secrets",
