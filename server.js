@@ -102,7 +102,7 @@ passport.use(
 app.post("/sms", function (req, res) {
   var twilio = require("twilio");
   var twiml = new twilio.twiml.MessagingResponse();
-  twiml.message("The Robots are coming! Head for the hills!");
+  twiml.message("I want to accept the order. Let's talk");
   res.writeHead(200, { "Content-Type": "text/xml" });
   res.end(twiml.toString());
 });
