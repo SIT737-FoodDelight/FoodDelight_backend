@@ -70,7 +70,8 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:5000/auth/google/secrets",
+      callbackURL:
+        "https://project-frontend-app-silly-hippopotamus-zv.mybluemix.net/auth/google/secrets",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
@@ -87,7 +88,8 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_ID,
       clientSecret: process.env.FACEBOOK_SECRET,
-      callbackURL: "http://localhost:5000/auth/facebook/callback",
+      callbackURL:
+        "https://project-frontend-app-silly-hippopotamus-zv.mybluemix.net/auth/facebook/callback",
     },
     function (accessToken, refreshToken, profile, cb) {
       User.findOrCreate({ facebookId: profile.id }, function (err, user) {

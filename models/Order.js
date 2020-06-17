@@ -29,6 +29,10 @@ const OrderSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  accepted_cook: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("Order", OrderSchema);
