@@ -15,6 +15,7 @@ const checklicenseRouter = require("./routes/checklicense");
 const acceptOrderRouter = require("./routes/acceptorder");
 const myordersRouter = require("./routes/myorders");
 const twilioRouter = require("./routes/twilio");
+const userDetailsRouter = require("./routes/userDetails");
 
 const passport = require("passport");
 const cors = require("cors");
@@ -127,6 +128,7 @@ app.use("/checklicense", checklicenseRouter);
 app.use("/accept", acceptOrderRouter);
 app.use("/myorders", myordersRouter);
 app.use("/sms", twilioRouter);
+app.use("/userDetails", userDetailsRouter);
 
 app.get(
   "/auth/google/secrets",
