@@ -99,13 +99,13 @@ passport.use(
   )
 );
 
-// app.post("/sms", function (req, res) {
-//   var twilio = require("twilio");
-//   var twiml = new twilio.TwimlResponse();
-//   twiml.message("The Robots are coming! Head for the hills!");
-//   res.writeHead(200, { "Content-Type": "text/xml" });
-//   res.end(twiml.toString());
-// });
+app.post("/sms", function (req, res) {
+  var twilio = require("twilio");
+  var twiml = new twilio.twiml.MessagingResponse();
+  twiml.message("The Robots are coming! Head for the hills!");
+  res.writeHead(200, { "Content-Type": "text/xml" });
+  res.end(twiml.toString());
+});
 
 app.get(
   "/auth/google",
