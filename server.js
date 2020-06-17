@@ -3,6 +3,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 //Routes
 const registerRouter = require("./routes/register");
@@ -14,6 +16,7 @@ const orderRouter = require("./routes/showorders");
 const checklicenseRouter = require("./routes/checklicense");
 const acceptOrderRouter = require("./routes/acceptorder");
 const myordersRouter = require("./routes/myorders");
+
 const twilioRouter = require("./routes/twilio");
 
 const passport = require("passport");
@@ -44,6 +47,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const mongoose = require("mongoose");
+
 mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -73,8 +77,8 @@ passport.use(
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL:
-        "https://sit737-frontend.us-south.cf.appdomain.cloud/auth/google/secrets",
-      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+      "https://sit737-frontend.us-south.cf.appdomain.cloud/auth/google/secrets",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
       console.log(profile);
@@ -91,8 +95,8 @@ passport.use(
       clientID: process.env.FACEBOOK_ID,
       clientSecret: process.env.FACEBOOK_SECRET,
       callbackURL:
-        "https://sit737-frontend.us-south.cf.appdomain.cloud/auth/facebook/callback",
-    },
+      "https://sit737-frontend.us-south.cf.appdomain.cloud/auth/facebook/callback",
+  },
     function (accessToken, refreshToken, profile, cb) {
       User.findOrCreate({ facebookId: profile.id }, function (err, user) {
         return cb(err, user);
@@ -127,6 +131,7 @@ app.use("/checklicense", checklicenseRouter);
 app.use("/accept", acceptOrderRouter);
 app.use("/myorders", myordersRouter);
 app.use("/sms", twilioRouter);
+app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
 
 app.get(
   "/auth/google/secrets",
@@ -139,6 +144,12 @@ app.get(
   }
 );
 
+
 app.listen(process.env.PORT || 5000, () => {
+  app.use(
+    "/swagger",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument)
+  );
   console.log("Server started...");
 });
