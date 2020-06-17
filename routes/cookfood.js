@@ -2,12 +2,9 @@ const express = require("express");
 const router = express.Router();
 const jwtauth = require("../config/jwtAuth");
 const cookProfile = require("../models/CookProfile");
+const orders = require("../models/Order");
 
 router.post("/", jwtauth, async (req, res, next) => {
-  const findProfile = await cookProfile.findOne({ user_id: req.user._id });
-  if (findProfile) {
-    if (findProfile.accepted === true) return res.json("cook profile exists");
-  }
   const cooking = new cookProfile({
     user_id: req.user._id,
     TFN_number: req.body.tfn,

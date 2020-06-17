@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
+const findOrCreate = require("mongoose-findorcreate");
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true,
   },
   password: {
     type: String,
-    required: true,
   },
   date: {
     type: Date,
@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
   facebookId: String,
   mobile_number: {
     type: String,
-    required: true,
+    default: "",
   },
   user_address: {
     type: String,
@@ -25,4 +25,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+UserSchema.plugin(passportLocalMongoose);
+UserSchema.plugin(findOrCreate);
 module.exports = mongoose.model("User", UserSchema);

@@ -1,6 +1,8 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const User = require("../models/User");
+const google = require("../models/googleuser");
+const findOrCreate = require("mongoose-findorcreate");
 
 module.exports = function (passport) {
   passport.use(
@@ -8,10 +10,12 @@ module.exports = function (passport) {
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/auth/google/secrets",
+        callbackURL:
+          "https://project-frontend-app-silly-hippopotamus-zv.mybluemix.net/dashboard",
       },
       function (accessToken, refreshToken, profile, cb) {
-        User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        google.findOrCreate({ googleId: profile.id }, function (err, user) {
+          console.log(profile);
           return cb(err, user);
         });
       }
@@ -38,7 +42,7 @@ module.exports = function (passport) {
   });
 
   passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
+    google.findById(id, function (err, user) {
       done(err, user);
     });
   });
