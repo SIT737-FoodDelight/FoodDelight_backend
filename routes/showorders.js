@@ -4,7 +4,7 @@ const route = require("express").Router();
 const orders = require("../models/Order");
 
 route.post("/", jwtAuth, async (req, res) => {
-  orders.find({}, (err, orders) => {
+  orders.find({ order_status: { $ne: true } }, (err, orders) => {
     if (err) return res.json("error retrieving orders");
 
     res.json(orders);
