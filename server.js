@@ -20,6 +20,8 @@ const myordersRouter = require("./routes/myorders");
 
 const twilioRouter = require("./routes/twilio");
 const userDetailsRouter = require("./routes/userDetails");
+const googleRouter = require("./routes/googleAuth")
+const facebookRouter = require("./routes/facebookAuth")
 
 const passport = require("passport");
 const cors = require("cors");
@@ -135,6 +137,8 @@ app.use("/accept", acceptOrderRouter);
 app.use("/myorders", myordersRouter);
 app.use("/sms", twilioRouter);
 app.use("/userDetails", userDetailsRouter);
+app.use("/google", googleRouter);
+app.use("/facebook", facebookRouter);
 
 app.get(
   "/auth/google/secrets",
