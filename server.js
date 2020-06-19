@@ -78,7 +78,7 @@ passport.use(
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL:
-        "https://project-backend-app-friendly-squirrel-qb.mybluemix.net/auth/google/secrets",
+        "https://sit737-frontend.us-south.cf.appdomain.cloud/auth/google/secrets",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
@@ -96,7 +96,7 @@ passport.use(
       clientID: process.env.FACEBOOK_ID,
       clientSecret: process.env.FACEBOOK_SECRET,
       callbackURL:
-        "https://project-backend-app-friendly-squirrel-qb.mybluemix.net/auth/facebook/callback",
+        "https://sit737-frontend.us-south.cf.appdomain.cloud/auth/facebook/callback",
     },
     function (accessToken, refreshToken, profile, cb) {
       User.findOrCreate({ facebookId: profile.id }, function (err, user) {
@@ -117,8 +117,10 @@ app.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", { failureRedirect: "/" }),
   async (req, res) => {
-    console.log(req);
-    res.redirect("/");
+    console.log(req.session.passport.user);
+    const user = await User.findOne({ _id: req.session.passport.user });
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+    res.json({ message: "fb_login_Success", authToken: token });
   }
 );
 
@@ -141,7 +143,7 @@ app.get(
     console.log(req.session.passport.user);
     const user = await User.findOne({ _id: req.session.passport.user });
     const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-    res.json({ message: "login_Success", authToken: token });
+    res.json({ message: "google_login_Success", authToken: token });
   }
 );
 
