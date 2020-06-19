@@ -6,7 +6,9 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
 router.post("/", async (req, res) => {
+    console.log(req)
 	const access_token = req.header("access_token");
+    console.log(access_token)
 	const verifiedDetails = await fetch(
 		`https://graph.facebook.com/me?access_token=${access_token}`
 	);
