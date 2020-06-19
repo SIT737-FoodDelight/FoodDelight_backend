@@ -6,17 +6,15 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
 router.post("/", async (req, res) => {
-    console.log(req)
 	const accessToken = req.header("accessToken");
-    console.log(accessToken)
 	const verifiedDetails = await fetch(
 		`https://graph.facebook.com/me?access_token=${accessToken}`
 	);
 	console.log(verifiedDetails);
-	const userDetails = await verifiedDetails.json();
-	console.log(userDetails);
-	const username = userDetails.data.user_id;
-	if (username) {
+	// const userDetails = await verifiedDetails.json();
+	// console.log(userDetails);
+	const username = req.header("username");
+	if (verifiedDetails.status === 200) {
 		const user = await User.findOne({ username: username });
 		if (!user) {
 			const newUser = new User({
