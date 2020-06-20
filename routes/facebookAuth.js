@@ -9,7 +9,8 @@ router.post("/", async (req, res) => {
 	const accessToken = req.header("accessToken");
 	const userDetails = await fetch(
 		`https://graph.facebook.com/me?fields=email&access_token=${accessToken}`
-	);
+    );
+    console.log(userDetails)
 	if (userDetails.email) {
 		const user = await User.findOne({ username: userDetails.email });
 		if (!user) {
