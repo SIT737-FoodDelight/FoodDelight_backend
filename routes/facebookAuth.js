@@ -7,18 +7,14 @@ const { v4: uuidv4 } = require("uuid");
 
 router.post("/", async (req, res) => {
 	const accessToken = req.header("accessToken");
-	const verifiedDetails = await fetch(
-		`https://graph.facebook.com/me?access_token=${accessToken}`
+	const userDetails = await fetch(
+		`https://graph.facebook.com/me?fields=email&access_token=${accessToken}`
 	);
-	console.log(verifiedDetails);
-	// const userDetails = await verifiedDetails.json();
-	// console.log(userDetails);
-	const username = req.header("username");
-	if (verifiedDetails.status === 200) {
-		const user = await User.findOne({ username: username });
+	if (userDetails.email) {
+		const user = await User.findOne({ username: userDetails.email });
 		if (!user) {
 			const newUser = new User({
-				username: username,
+				username: userDetails.email,
 				password: uuidv4(),
 			});
 			newUser.save(async (err, savedUser) => {
@@ -29,12 +25,12 @@ router.post("/", async (req, res) => {
 						{ _id: savedUser._id },
 						process.env.TOKEN_SECRET
 					);
-					return res.json({ message: "login_Success", authToken: token });
+					return res.json({ message: "login_Success", authToken: token, username: userDetails.email });
 				}
 			});
 		} else {
 			const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-			return res.json({ message: "login_Success", authToken: token });
+			return res.json({ message: "login_Success", authToken: token, username: userDetails.email });
 		}
 	} else return res.status(400).send("Email or password incorrect");
 });
